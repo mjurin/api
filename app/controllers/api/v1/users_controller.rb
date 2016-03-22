@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :require_authentication
+  before_action :require_authentication, except: [ :create ]
 
   def create
     @user = User.new(user_params.merge(require_password: true,
