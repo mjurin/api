@@ -19,7 +19,6 @@ describe User do
     it { expect(user).to_not allow_value("base@example").for(:email) }
     it { expect(user).to_not allow_value("blah").for(:email) }
     # Inclusion/acceptance of values
-    it { expect(user).to validate_length_of(:password).is_at_least(6) }
     it { expect(user).to validate_confirmation_of(:password) }  # Ensure two values match
   end
 
@@ -33,5 +32,38 @@ describe User do
     it 'expects not to have password_digest' do
       expect(JSON.parse(user.to_json)).to_not have_key(:password_digest)
     end
+
+    it 'expects to have name' do
+      expect(JSON.parse(user.to_json)).to have_key('name')
+    end
+
   end
+
+  describe "public instance methods" do
+    context "responds to its methods" do
+      it { expect(user).to respond_to(:name) }
+    end
+
+    context "#method name" do
+      it "expect to return firstname + lastname" do
+        expect(user.name).to eq("#{user.firstname} #{user.lastname}")
+      end
+    end
+  end
+
+  describe "public class methods" do
+    # context "responds to its methods" do
+    #   it { expect(factory_instance).to respond_to(:public_method_name) }
+    #   it { expect(factory_instance).to respond_to(:public_method_name) }
+    # end
+
+    # context "executes methods correctly" do
+    #   context "self.method name" do
+    #     it "does what it's supposed to..."
+    #       expect(factory_instance.method_to_test).to eq(value_you_expect)
+    #     end
+    #   end
+    # end
+  end
+
 end

@@ -5,8 +5,7 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  validates :password, length: { minimum: 6 }
-  validates :password, confirmation: { if: ->{ require_password_confirmation }}, if: ->{ require_password || require_password_confirmation }
+  validates :password, length: { minimum: 6 }, confirmation: { if: ->{ require_password_confirmation }}, if: ->{ require_password || require_password_confirmation }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
@@ -22,6 +21,10 @@ class User < ActiveRecord::Base
     doc.api_key = doc.generate_api_key
   end
 
+  def name
+    "#{firstname} #{lastname}"
+  end
+
   def generate_api_key
     loop do
       token = SecureRandom.base64.tr('+/=', 'Qrt')
@@ -30,7 +33,8 @@ class User < ActiveRecord::Base
   end
 
   def to_json(opts={})
-    opts.merge!(only: [:id, :email, :api_key ])
+    opts.merge!(only: [:id, :email, :api_key, :firstname, :lastname, :name ],
+                methods: [:name])
     super(opts)
   end
 

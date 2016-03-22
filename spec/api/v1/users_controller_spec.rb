@@ -3,7 +3,8 @@ require 'rails_helper'
 describe Api::V1::UsersController, type: :controller do
   before do
     set_json_format
-    api_login_as create(:user)
+    @user = create(:user)
+    api_login_as @user
   end
 
   describe 'Create action' do
@@ -22,6 +23,18 @@ describe Api::V1::UsersController, type: :controller do
 
       expect(json['error']['message']
         ).to eq "Password confirmation doesn't match Password"
+    end
+  end
+
+  describe 'Update action' do
+    it 'expects to update user firstname' do
+      put :update, id: @user.id, user: { firstname: 'Updated name' }
+      expect(json['firstname']).to eq "Updated name"
+    end
+
+    it 'expects not to update user email if not valid' do
+      put :update, id: @user.id, user: { email: 'Updated email' }
+      expect(json['error']['message']).to eq 'Email is invalid'
     end
   end
 

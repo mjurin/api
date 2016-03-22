@@ -5,7 +5,6 @@ describe Api::V1::OauthsController, type: :controller do
   before do
     set_json_format
     url = 'https://graph.facebook.com/me?fields=id,email,name&access_token=banana'
-    #response_body =  "{\"status\":[{\"id\":\"1\"}]}"
     response_body =  "{\"status\":[200], \"email\":\"test@fromfacebook.com\",
                       \"uid\":\"123123\", \"name\":\"Facebook user\",
                       \"gender\": \"male\", \"birthday\": \"7-7-2014\"}"

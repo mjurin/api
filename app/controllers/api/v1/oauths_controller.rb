@@ -5,8 +5,7 @@ class Api::V1::OauthsController < ApplicationController
     @user = User.new
     provider = oauth_params[:provider]
     if provider =~ /facebook|google/
-      url = "https://graph.facebook.com/me?fields=id,email,name&access_token="
-      url = "https://www.googleapis.com/oauth2/v2/userinfo?access_token=" if provider == "google"
+      url = Oauth.url_for_provider provider
 
       begin
         content = open(URI.encode(url + oauth_params[:token]))

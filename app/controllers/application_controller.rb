@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token
+  before_filter :ensure_json_request
+
+  def ensure_json_request
+    return if params[:format] == "json" || request.headers["Accept"] =~ /json/
+    render nothing: true, status: 406
+  end
 
   def require_authentication
     unless current_user
