@@ -58,3 +58,6 @@ group :test do
 end
 
 gem 'omniauth-facebook'
+
+gem 'activeadmin', github: 'activeadmin'
+gem 'devise'

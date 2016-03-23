@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
   before_filter :ensure_json_request
 
+
   def ensure_json_request
     return if params[:format] == "json" || request.headers["Accept"] =~ /json/
     render nothing: true, status: 406
@@ -34,4 +35,7 @@ class ApplicationController < ActionController::Base
       render json: object.to_json
     end
   end
+
+
+
 end
